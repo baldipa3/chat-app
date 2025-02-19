@@ -7,33 +7,17 @@
           <p class="mt-2 text-sm text-gray-700">A list of all available chat rooms.</p>
         </div>
         <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <%= link_to "New Room", new_room_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 sm:w-auto" %>
+          <%= link_to "New Room", new_room_path, data: { turbo_frame: "modal" }, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 sm:w-auto" %>
         </div>
       </div>
-      
       <div class="mt-8 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 p-4">
-                <% @rooms.each do |room| %>
-                  <div class="relative rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm hover:border-teal-500 hover:ring-1 hover:ring-teal-500">
-                    <%= link_to room_path(room), class: "focus:outline-none" do %>
-                      <div class="flex items-center space-x-3">
-                        <div class="flex-shrink-0">
-                          <div class="h-10 w-10 rounded-full bg-teal-500 flex items-center justify-center">
-                            <span class="text-white font-medium"><%= room.name[0].upcase %></span>
-                          </div>
-                        </div>
-                        <div class="min-w-0 flex-1">
-                          <p class="text-sm font-medium text-gray-900"><%= room.name %></p>
-                          <p class="truncate text-sm text-gray-500"><%= pluralize(room.users.count, 'member') %></p>
-                        </div>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
+              <div id="rooms-list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 p-4">
+                <%= render @rooms %>
               </div>
+              <turbo-frame id="modal"></turbo-frame>
             </div>
           </div>
         </div>
