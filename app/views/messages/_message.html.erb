@@ -1,0 +1,10 @@
+<%= turbo_frame_tag dom_id(message), class: '' do %>
+  <div class="flex items-start">
+    <div class="rounded-lg px-4 py-2 max-w-md shadow">
+      <p class="text-xs mb-1">
+        <%= message.user.name %> - <%= time_ago_in_words(message.created_at) %> ago
+      </p>
+      <p><%= message.content %></p>
+    </div>
+  </div>
+<% end %>

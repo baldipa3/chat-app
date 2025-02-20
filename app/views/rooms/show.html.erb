@@ -17,47 +17,18 @@
     </div>
 
     <!-- Messages Area -->
-    <div class="flex-1 overflow-y-auto bg-gray-50 px-4 py-3 space-y-3 min-h-0">
-      <% @room.messages.includes(:user).each do |message| %>
-        <div class="flex items-start <%= message.user == current_user ? 'justify-end' : '' %>">
-          <% unless message.user == current_user %>
-            <div class="flex-shrink-0 mr-3">
-              <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                <span class="font-medium text-gray-600"><%= message.user.name.first.upcase %></span>
-              </div>
-            </div>
-          <% end %>
-          
-          <div class="<%= message.user == current_user ? 'bg-teal-500 text-white' : 'bg-white text-gray-800' %> rounded-lg px-4 py-2 max-w-md shadow">
-            <% unless message.user == current_user %>
-              <p class="text-xs text-gray-500 mb-1"><%= message.user.name %></p>
-            <% end %>
-            <p><%= message.content %></p>
-            <p class="text-xs <%= message.user == current_user ? 'text-teal-100' : 'text-gray-400' %> text-right mt-1">
-              <%= time_ago_in_words(message.created_at) %> ago
-            </p>
-          </div>
-        </div>
+    <div class="flex-1 overflow-y-auto bg-gray-50 px-4 py-3 space-y-3 min-h-0" id='messages'>
+      <%= turbo_frame_tag "messages_#{@room.id}" do %>
+        <%= turbo_stream_from @room %>
+        <%= render @room.messages %>
       <% end %>
     </div>
 
     <!-- Message Input -->
     <div class="bg-white shadow-lg rounded-b-lg border-t-2 border-gray-200">
       <div class="max-w-4xl mx-auto p-4 bg-gray-50 rounded-b-lg">
-        <%= form_with(model: [@room, Message.new], local: true, class: "flex space-x-4") do |f| %>
-          <%= f.text_field :content, 
-              class: "flex-1 rounded-full border-gray-300 focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 shadow-inner bg-white px-6 py-3",
-              placeholder: "Type your message...",
-              autocomplete: "off" %>
-          <%= f.submit "Send", 
-              class: "px-6 py-2 bg-teal-500 text-white font-medium rounded-full hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 shadow-sm" %>
-        <% end %>
+        <%= render partial: 'messages/form' %>
       </div>
     </div>
   </div>
-  <%= link_to rooms_path, class: "fixed bottom-4 right-4 bg-teal-500 text-white p-3 rounded-full shadow-lg hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2" do %>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-    </svg>
-  <% end %>
 </div>
