@@ -2,12 +2,12 @@
 service: chat_app
 
 # Name of the container image.
-image: your-user/chat_app
+image: baldipa3/chat_app
 
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 82.29.178.12
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -19,13 +19,13 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: app.example.com
+  host: srv732858.hstgr.cloud
 
 # Credentials for your image host.
 registry:
   # Specify the registry server, if you're not using Docker Hub
   # server: registry.digitalocean.com / ghcr.io / ...
-  username: your-user
+  username: baldipa3
 
   # Always use an access token rather than real password when possible.
   password:
@@ -39,6 +39,10 @@ env:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
     SOLID_QUEUE_IN_PUMA: true
+    SECRET_KEY_BASE: <%= `rails secret` %>
+    RAILS_ENV: production
+    DATABASE_URL: sqlite3:///storage/production.sqlite3
+
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
