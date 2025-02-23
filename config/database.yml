@@ -25,17 +25,40 @@ test:
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
   primary:
-    <<: *default
-    database: storage/production.sqlite3
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    database: chat_app_production
+    username: <%= Rails.application.credentials.dig(:pg, :username) %>
+    password: <%= Rails.application.credentials.dig(:pg, :password) %>
+    host: <%= Rails.application.credentials.dig(:pg, :host) %>
+  
   cache:
-    <<: *default
-    database: storage/production_cache.sqlite3
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    database: chat_app_production_cache
+    username: <%= Rails.application.credentials.dig(:pg, :username) %>
+    password: <%= Rails.application.credentials.dig(:pg, :password) %>
+    host: <%= Rails.application.credentials.dig(:pg, :host) %>
     migrations_paths: db/cache_migrate
+  
   queue:
-    <<: *default
-    database: storage/production_queue.sqlite3
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    database: chat_app_production_queue
+    username: <%= Rails.application.credentials.dig(:pg, :username) %>
+    password: <%= Rails.application.credentials.dig(:pg, :password) %>
+    host: <%= Rails.application.credentials.dig(:pg, :host) %>
     migrations_paths: db/queue_migrate
+  
   cable:
-    <<: *default
-    database: storage/production_cable.sqlite3
+    adapter: postgresql
+    encoding: unicode
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+    database: chat_app_production_cable
+    username: <%= Rails.application.credentials.dig(:pg, :username) %>
+    password: <%= Rails.application.credentials.dig(:pg, :password) %>
+    host: <%= Rails.application.credentials.dig(:pg, :host) %>
     migrations_paths: db/cable_migrate
